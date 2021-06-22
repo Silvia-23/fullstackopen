@@ -16,6 +16,9 @@ const App = () => {
   const goodText = "good"
   const neutralText = "neutral"
   const badText = "bad"
+  const allText = "all"
+  const averageText = "average"
+  const positiveText = "positive"
 
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
@@ -32,7 +35,10 @@ const App = () => {
       <StatisticEntry text={goodText} count={good} />
       <StatisticEntry text={neutralText} count={neutral} />
       <StatisticEntry text={badText} count={bad} />
-    </div>
+      <StatisticEntry text={allText} count={bad + good + neutral} />
+      <StatisticEntry text={averageText} count={(good - bad) / (good + neutral + bad)} />
+      <StatisticEntry text={positiveText} count={good / (good + bad + neutral)} />
+</div>
   )
 }
 
