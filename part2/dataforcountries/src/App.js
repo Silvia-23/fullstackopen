@@ -23,7 +23,15 @@ const Country = ({ country }) => {
   )
 }
 
-const Countries = ({ countries }) => {
+const CountryPreview = ({ countryName, onClick }) => (
+  <div>
+    {countryName}
+    <button onClick={onClick}>show</button>
+  </div>
+)
+
+const Countries = ({ countries, onCountryClick }) => {
+
   if (countries.length > 10) {
     return (
       <p>Too many matches, specify another filter</p>
@@ -36,7 +44,7 @@ const Countries = ({ countries }) => {
   }
   return (
     <div>
-      {countries.map(country => <p key={country.name}>{country.name}</p>)}
+      {countries.map(country => <CountryPreview key={country.name} countryName={country.name} onClick={() => onCountryClick(country)} />)}
     </div>
   )
 }
@@ -44,9 +52,11 @@ const Countries = ({ countries }) => {
 const App = () => {
   const [filter, setFilter] = useState('')
   const [countries, setCountries] = useState([])
+  const [inspectedCountry, setInspectedCountry] = useState('')
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
+    setInspectedCountry('')
   }
 
   const hook = () => {
@@ -62,12 +72,14 @@ const App = () => {
   useEffect(hook, [])
   console.log('rendering', countries.length, 'countries')
 
-  const shownCountries = countries.filter(country => country.name.toLowerCase().includes(filter.toLowerCase()))
+  const shownCountries = inspectedCountry === ''
+    ? countries.filter(country => country.name.toLowerCase().includes(filter.toLowerCase()))
+    : [inspectedCountry]
 
   return (
     <div>
       <SearchFilter filter={filter} onFilterChange={handleFilterChange} />
-      <Countries countries={shownCountries} />
+      <Countries countries={shownCountries} onCountryClick={(country) => setInspectedCountry(country)}/>
     </div>
     
   )
