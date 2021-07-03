@@ -1,5 +1,6 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import personsService from './services/persons'
+import AddNewPersonForm from './components/AddNewPersonsForm'
 
 const PersonEntry = ({ person }) => (
   <p>{person.name} {person.number}</p>
@@ -11,23 +12,9 @@ const SearchFilter = ({ filter, onFilterChange }) => (
   </div>
 )
 
-const AddNewPersonForm = ({ onSubmit, nameInput, onNameChange, numberInput, onNumberChange }) => (
-  <form onSubmit={onSubmit}>
-    <div>
-      name: <input value={nameInput} onChange={onNameChange} />
-    </div>
-    <div>
-      number: <input value={numberInput} onChange={onNumberChange} />
-    </div>
-    <div>
-      <button type="submit">add</button>
-    </div>
-  </form>
-)
-
 const Persons = ({ persons }) => (
   <div>
-    {persons.map(p => <PersonEntry key={p.name} person={p}/>)}
+    {persons.map(p => <PersonEntry key={p.id} person={p}/>)}
   </div>
 )
 
@@ -37,17 +24,16 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
 
-  const hook = () => {
+  useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    personsService
+      .getAll()
+      .then(initialPersons => {
+        console.log('getAll persons promise fulfilled')
+        setPersons(initialPersons)
       })
-  }
+  }, [])
 
-  useEffect(hook, [])
   console.log('rendering', persons.length, 'persons')
 
   const shownPersons = filter === ''  
@@ -65,10 +51,15 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    
-    setPersons(persons.concat(newPerson))
-    setNewName('')
-    setNewNumber('')
+
+    personsService
+      .create(newPerson)
+      .then(returnedPerson => {
+        console.log(returnedPerson)
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      })
   }
 
   const handleNawNameChange = (event) => {
