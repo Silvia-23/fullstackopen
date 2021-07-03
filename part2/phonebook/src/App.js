@@ -32,6 +32,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
   const [ notificationMessage, setNotificationMessage ] = useState(null)
+  const [ errorMessage, setErrorMessage ] = useState(null)
 
   useEffect(() => {
     console.log('effect')
@@ -62,6 +63,15 @@ const App = () => {
             setPersons(persons.map(p => p.id === person.id ? returnedPerson : p))
             setNotificationMessage(`Changed number for ${returnedPerson.name}`)
             setTimeout(() => setNotificationMessage(null), 5000)
+          })
+          .catch(error => {
+            setErrorMessage(
+              `Information of '${person.name}' was already deleted from server`
+            )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
+            setPersons(persons.filter(p => p.id !== person.id))
           })
           return;
       }
@@ -113,7 +123,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notificationMessage} />
+      <Notification message={errorMessage} isError={true} />
+      <Notification message={notificationMessage} isError={false} />
       <SearchFilter filter={filter} onFilterChange={handleFilterChange}/>
       <h3>Add a new contact</h3>
       <AddNewPersonForm 
