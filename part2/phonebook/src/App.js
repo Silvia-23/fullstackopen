@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react'
 import personsService from './services/persons'
 import AddNewPersonForm from './components/AddNewPersonsForm'
 
-const PersonEntry = ({ person }) => (
-  <p>{person.name} {person.number}</p>
+const PersonEntry = ({ person, deletePerson }) => (
+  <p>
+    {person.name} {person.number}
+    <button onClick={deletePerson}>delete</button>
+    </p>
 )
 
 const SearchFilter = ({ filter, onFilterChange }) => (
@@ -12,11 +15,15 @@ const SearchFilter = ({ filter, onFilterChange }) => (
   </div>
 )
 
-const Persons = ({ persons }) => (
-  <div>
-    {persons.map(p => <PersonEntry key={p.id} person={p}/>)}
-  </div>
-)
+const Persons = ({ persons, deletePerson }) => (
+    <div>
+      {persons.map(p => 
+        <PersonEntry 
+        key={p.id} 
+        person={p} 
+        deletePerson={() => deletePerson(p.id)}/>)}
+    </div>
+  )
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -53,7 +60,7 @@ const App = () => {
     }
 
     personsService
-      .create(newPerson)
+      .createPerson(newPerson)
       .then(returnedPerson => {
         console.log(returnedPerson)
         setPersons(persons.concat(returnedPerson))
@@ -77,6 +84,19 @@ const App = () => {
     setFilter(event.target.value)
   }
 
+  const deletePerson = (id) => {
+    const person = persons.find(p => p.id === id)
+
+    if(window.confirm(`Delete ${person.name}?`)) {
+      personsService
+        .deletePerson(person)
+        .then(person => {
+          console.log(person)
+          setPersons(persons.filter(p => p.id !== id))
+        })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -90,7 +110,7 @@ const App = () => {
         onNumberChange={handleNewNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={shownPersons} />
+      <Persons persons={shownPersons} deletePerson={(id) => deletePerson(id)}/>
     </div>
   )
 }
