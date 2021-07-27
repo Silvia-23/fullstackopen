@@ -128,6 +128,24 @@ test('a blog can be deleted', async () => {
   expect(contents).not.toContain(blogToDelete.title)
 })
 
+test('a blog can be updated', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToUpdate = blogsAtStart[0]
+  const newBlog = {
+    ...blogToUpdate,
+    likes: 33
+  }
+
+  const response = await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  expect(response.body)
+    .toEqual(newBlog)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
