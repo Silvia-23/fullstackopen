@@ -27,6 +27,23 @@ test('all blogs are returned', async () => {
   expect(response.body).toHaveLength(helper.initialBlogs.length)
 })
 
+test('a specific blog is within the returned blog', async () => {
+  const response = await api.get('/api/blogs')
+
+  const contents = response.body.map(r => r.title)
+
+  expect(contents).toContain(
+    'TDD harms architecture'
+  )
+})
+
+test('the unique identifier property of a blog is named id and is defined', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToFetch = blogsAtStart[0]
+
+  expect(blogToFetch.id).toBeDefined()
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
