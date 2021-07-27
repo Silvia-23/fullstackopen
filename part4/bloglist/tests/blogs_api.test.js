@@ -44,6 +44,30 @@ test('the unique identifier property of a blog is named id and is defined', asyn
   expect(blogToFetch.id).toBeDefined()
 })
 
+test('a valid blog can be added', async () => {
+  const newBlog = {
+    title: 'Test Blog',
+    author: 'Test Author',
+    url: 'www.testurl.com',
+    likes: 15
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+  const contents = blogsAtEnd.map(r => r.title)
+
+  expect(contents).toContain(
+    'Test Blog'
+  )
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
