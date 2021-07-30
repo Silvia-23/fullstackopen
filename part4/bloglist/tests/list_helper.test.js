@@ -175,7 +175,7 @@ describe('favorite blog', () => {
   })
 })
 
-describe('most blogs', () => {
+/*describe('most blogs', () => {
   const listWithOneBlog = [
     {
       _id: '5a422aa71b54a676234d17f8',
@@ -349,4 +349,4 @@ describe('most likes', () => {
 
     expect(result).toEqual(targetResult)
   })
-})
+})*/
