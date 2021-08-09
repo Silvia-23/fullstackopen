@@ -1,9 +1,9 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QyMiIsImlkIjoiNjEwZjkyZDM0YzFlZGUwZWY0OWVmM2M5IiwiaWF0IjoxNjI4NDQ5MTg5fQ.8EbxbdzL3voSDGhBxcC_AFvQJVpTv9kMnwntTx8BBVk
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QyIiwiaWQiOiI2MTBmODRkNjRjMWVkZTBlZjQ5ZWYzYmMiLCJpYXQiOjE2Mjg1MDQ4OTR9.BYai27AtZKG_3QC-KGPvLJL0hXGQZryeHfuZLGMJgJM
 
 {
-    "title": "Sample Blog 3",
+    "title": "Sample Blog 4",
     "author": "Diana White",
     "url": "www.testblog2.com",
     "likes": 5
