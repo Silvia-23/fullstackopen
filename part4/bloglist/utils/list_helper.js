@@ -23,21 +23,29 @@ const favoriteBlog = (blogs) => {
   return sortedBlogs[0]
 }
 
-//TODO EXERCISES 4.6 AND 4.7 ARE MISSING|
 const mostBlogs = (blogs) => {
-  let authorsAndPosts = [...blogs]
-  authorsAndPosts = _.groupBy(authorsAndPosts, blog => blog.author)
-  _.map(authorsAndPosts, blog => ({ author: blog.key, posts: blog.values.length }))
-  //console.log(_.maxBy(authorsAndPosts, blogList => blogList.values.length))
-  return authorsAndPosts.values[0]
+  let result = _(blogs)
+    .groupBy(blog => blog.author)
+    .orderBy(bloglist => -bloglist.length)
+    .values()
+    .value()
+    .map(blogList => ({ author: blogList[0].author, blogs: blogList.length }))[0]
+
+  return result
 }
 
 const mostLikes = (blogs) => {
-  console.log(_.chain([...blogs])
+  let result = _(blogs)
     .groupBy(blog => blog.author)
-    .reduce((sum, blogList) => sum + blogList.likes).value())
-  return _.chain([...blogs])
-    .maxBy(blog => blog.likes)
+    .map(blogList => ({ 
+      author: blogList[0].author, 
+      likes: blogList.reduce((sum, blogList) => sum + blogList.likes, 0)
+    }))
+    .orderBy(blog => -blog.likes)
+    .values()
+    .value()[0]
+
+  return result
 }
 
 module.exports = {
