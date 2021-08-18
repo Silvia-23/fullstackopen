@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const supertest = require('supertest')
 const helper = require('./test_helper')
@@ -100,4 +101,8 @@ describe('when there is initially one user in db', () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
   })
+})
+
+afterAll(() => {
+  mongoose.connection.close()
 })
