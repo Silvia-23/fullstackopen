@@ -7,6 +7,7 @@ import Notification from './components/Notification'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [ errorMessage, setErrorMessage ] = useState(null)
+  const [ notificationMessage, setNotificationMessage ] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -68,15 +69,16 @@ const App = () => {
     console.log('inserting new blog with: ', blogTitle, blogAuthor, blogUrl)
 
     try {
-      const newBlog = {
+      const blog = await blogService.createBlog({
         title: blogTitle, author: blogAuthor, url: blogUrl
-      }
-      const blog = await blogService.createBlog(newBlog)
+      })
 
       setBlogTitle('')
       setBlogAuthor('')
       setBlogUrl('')
       setBlogs(blogs.concat(blog))
+      setNotificationMessage(`New blog: ${blog.title} by ${blog.author} added`)
+      setTimeout(() => setNotificationMessage(null), 5000)
     } catch (exception) {
       setErrorMessage('Blog insertion failed')
       setTimeout(() => {
@@ -117,6 +119,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={notificationMessage} isError={false} />
       <h2>blogs</h2>
       <p>
         {user.name} logged in
