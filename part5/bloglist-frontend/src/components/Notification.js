@@ -6,7 +6,7 @@ const Notification = ({ message, isError }) => {
       borderStyle: 'solid',
       borderRadius: 5,
       padding: 20,
-      marginBttom: 10
+      marginBottom: 10
   }
 
   if (message === null) {
