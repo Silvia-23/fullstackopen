@@ -114,6 +114,28 @@ const App = () => {
     }
   }
 
+  const increaseLikesOf = async (id) => {
+    const blog = blogs.find(b => b.id === id)
+    const changedBlog = { ...blog, likes: blog.likes + 1 }
+
+    try {
+       await blogService
+      .updateBlog(id, changedBlog)
+
+      const allBlogs = await blogService.getAll()
+      
+      setBlogs(allBlogs)
+    } catch (exception) {
+      setErrorMessage(
+        `Blog update failed`
+      )
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+      setBlogs(blogs.filter(b => b.id !== id))
+    }
+  }
+
   return (
     <div>
       <Notification message={errorMessage} isError={true} />
@@ -132,7 +154,11 @@ const App = () => {
       }
 
       {blogs.map(blog =>        
-        <Blog key={blog.id} blog={blog} />)}
+        <Blog 
+          key={blog.id} 
+          blog={blog} 
+          increaseLikes={() => increaseLikesOf(blog.id)}
+        />)}
     </div>
   )
 }
