@@ -136,6 +136,29 @@ const App = () => {
     }
   }
 
+  const removeBlog = async (id) => {
+    const blog = blogs.find(b => b.id === id)
+
+    if (window.confirm(`Remove blog: ${blog.name} by ${blog.author}?`)) {
+      try {
+        await blogService
+       .deleteBlog(id)
+ 
+       const allBlogs = await blogService.getAll()
+       
+       setBlogs(blogs.filter(b => b !== blog))
+     } catch (exception) {
+       setErrorMessage(
+         `Blog update failed`
+       )
+       setTimeout(() => {
+         setErrorMessage(null)
+       }, 5000)
+       setBlogs(blogs.filter(b => b.id !== id))
+     }
+    }
+  }
+
   return (
     <div>
       <Notification message={errorMessage} isError={true} />
@@ -158,6 +181,7 @@ const App = () => {
           key={blog.id} 
           blog={blog} 
           increaseLikes={() => increaseLikesOf(blog.id)}
+          removeBlog={() => removeBlog(blog.id)}
         />)}
     </div>
   )

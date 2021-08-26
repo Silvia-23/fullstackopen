@@ -1,10 +1,16 @@
 import {React, useState} from 'react'
-import Togglable from './Togglable'
 
-const Blog = ({blog, increaseLikes}) => {
+const Blog = ({blog, increaseLikes, removeBlog}) => {
   const [visible, setVisible] = useState(false)
 
+  const loggedUser = JSON.parse(window.localStorage.getItem('loggedBloglistAppUser'))
+
   const showWhenVisible = { display: visible ? '' : 'none' }
+  const showRemoveButtonWhenCreator = { 
+    display: loggedUser !== null && blog.user.username === loggedUser.username 
+      ? '' 
+      : 'none' 
+    }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -17,7 +23,6 @@ const Blog = ({blog, increaseLikes}) => {
     marginBottom: 10
   }
 
-
   return (
     <div style={blogStyle}>
       {blog.title} by {blog.author} <button onClick={toggleVisibility}>{visible ? 'hide' : 'show'}</button>
@@ -27,6 +32,8 @@ const Blog = ({blog, increaseLikes}) => {
           {blog.url}<br />
           {blog.likes} likes<button onClick={increaseLikes}>like</button><br />
           {blog.user.name}
+          <br />
+          <button style={showRemoveButtonWhenCreator} onClick={removeBlog}>remove</button>
         </div>
       </div>
   </div>  
