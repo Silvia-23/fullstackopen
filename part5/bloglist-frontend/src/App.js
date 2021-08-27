@@ -20,7 +20,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -66,35 +66,35 @@ const App = () => {
 
   const loginForm = () => (
     <div>
-        <Notification message={errorMessage} isError={true} />
-        <h2>Log in to application</h2>
-        <form onSubmit={handleLogin}>
-          <div>
+      <Notification message={errorMessage} isError={true} />
+      <h2>Log in to application</h2>
+      <form onSubmit={handleLogin}>
+        <div>
             username
-              <input
-                type="text"
-                value={username}
-                name="Username"
-                onChange={({ target }) => setUsername(target.value)}
-              />
-          </div>
-          <div>
+          <input
+            type="text"
+            value={username}
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div>
             password
-              <input
-                type="password"
-                value={password}
-                name="Password"
-                onChange={({ target }) => setPassword(target.value)}
-              />
-          </div>
-          <button type="submit">login</button>
-        </form>
-      </div>
-    )
+          <input
+            type="password"
+            value={password}
+            name="Password"
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <button type="submit">login</button>
+      </form>
+    </div>
+  )
 
   const blogForm = () => (
     <Togglable buttonLabel='new blog' ref={blogFormRef}>
-        <BlogForm createBlog={addBlog} />
+      <BlogForm createBlog={addBlog} />
     </Togglable>
   )
 
@@ -119,15 +119,15 @@ const App = () => {
     const changedBlog = { ...blog, likes: blog.likes + 1 }
 
     try {
-       await blogService
-      .updateBlog(id, changedBlog)
+      await blogService
+        .updateBlog(id, changedBlog)
 
       const allBlogs = await blogService.getAll()
-      
+
       setBlogs(allBlogs)
     } catch (exception) {
       setErrorMessage(
-        `Blog update failed`
+        'Blog update failed'
       )
       setTimeout(() => {
         setErrorMessage(null)
@@ -142,20 +142,18 @@ const App = () => {
     if (window.confirm(`Remove blog: ${blog.name} by ${blog.author}?`)) {
       try {
         await blogService
-       .deleteBlog(id)
- 
-       const allBlogs = await blogService.getAll()
-       
-       setBlogs(blogs.filter(b => b !== blog))
-     } catch (exception) {
-       setErrorMessage(
-         `Blog update failed`
-       )
-       setTimeout(() => {
-         setErrorMessage(null)
-       }, 5000)
-       setBlogs(blogs.filter(b => b.id !== id))
-     }
+          .deleteBlog(id)
+
+        setBlogs(blogs.filter(b => b !== blog))
+      } catch (exception) {
+        setErrorMessage(
+          'Blog update failed'
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        setBlogs(blogs.filter(b => b.id !== id))
+      }
     }
   }
 
@@ -176,10 +174,10 @@ const App = () => {
         </div>
       }
 
-      {blogs.sort((b1, b2) => b2.likes - b1.likes).map(blog =>        
-        <Blog 
-          key={blog.id} 
-          blog={blog} 
+      {blogs.sort((b1, b2) => b2.likes - b1.likes).map(blog =>
+        <Blog
+          key={blog.id}
+          blog={blog}
           increaseLikes={() => increaseLikesOf(blog.id)}
           removeBlog={() => removeBlog(blog.id)}
         />)}

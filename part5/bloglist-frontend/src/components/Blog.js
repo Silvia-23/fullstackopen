@@ -1,16 +1,16 @@
-import {React, useState} from 'react'
+import { React, useState } from 'react'
 
-const Blog = ({blog, increaseLikes, removeBlog}) => {
+const Blog = ({ blog, increaseLikes, removeBlog }) => {
   const [visible, setVisible] = useState(false)
 
   const loggedUser = JSON.parse(window.localStorage.getItem('loggedBloglistAppUser'))
 
   const showWhenVisible = { display: visible ? '' : 'none' }
-  const showRemoveButtonWhenCreator = { 
-    display: loggedUser !== null && blog.user.username === loggedUser.username 
-      ? '' 
-      : 'none' 
-    }
+  const showRemoveButtonWhenCreator = {
+    display: loggedUser !== null && blog.user.username === loggedUser.username
+      ? ''
+      : 'none'
+  }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -36,7 +36,7 @@ const Blog = ({blog, increaseLikes, removeBlog}) => {
           <button style={showRemoveButtonWhenCreator} onClick={removeBlog}>remove</button>
         </div>
       </div>
-  </div>  
-)}
+    </div>
+  )}
 
 export default Blog

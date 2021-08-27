@@ -1,23 +1,25 @@
+import React from 'react'
+
 const Notification = ({ message, isError }) => {
   const notificationStyle = {
-      color: isError ? 'red' : 'green',
-      background: 'lightgrey',
-      fontSize: 15,
-      borderStyle: 'solid',
-      borderRadius: 5,
-      padding: 20,
-      marginBottom: 10
+    color: isError ? 'red' : 'green',
+    background: 'lightgrey',
+    fontSize: 15,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 20,
+    marginBottom: 10
   }
 
   if (message === null) {
-      return null
+    return null
   }
 
-  console.log("rendering notification")
+  console.log('rendering notification')
   return (
-      <div style={notificationStyle}>
-          {message}
-      </div>
+    <div style={notificationStyle}>
+      {message}
+    </div>
   )
 }
 
