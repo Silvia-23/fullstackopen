@@ -17,7 +17,7 @@ const Notification = ({ message, isError }) => {
 
   console.log('rendering notification')
   return (
-    <div style={notificationStyle}>
+    <div className='notification' style={notificationStyle}>
       {message}
     </div>
   )
