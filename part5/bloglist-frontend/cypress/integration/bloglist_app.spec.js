@@ -49,6 +49,31 @@ describe('Blog app', function() {
         title: 'Another Title',
         author: 'Blog Author',
         url: 'blog Url',
+        likes: 2,
+        user: {
+          name: 'Matti Luukkainen',
+          username: 'mluukkai',
+          password: 'salainen'
+        }
+      })
+
+      cy.createBlog({ 
+        title: 'Another Title 2',
+        author: 'Blog Author',
+        url: 'blog Url',
+        likes: 5,
+        user: {
+          name: 'Matti Luukkainen',
+          username: 'mluukkai',
+          password: 'salainen'
+        }
+      })
+
+      cy.createBlog({ 
+        title: 'Another Title 3',
+        author: 'Blog Author',
+        url: 'blog Url',
+        likes: 3,
         user: {
           name: 'Matti Luukkainen',
           username: 'mluukkai',
@@ -104,5 +129,18 @@ describe('Blog app', function() {
 
       cy.contains('Another Title by Blog Author')
     })
+
+    it('Blogs are ordered by likes descending', function() {
+      cy.get('.blog').then( items => {
+        cy.wrap(items[0]).contains('show').click()
+        cy.wrap(items[1]).contains('show').click()
+        cy.wrap(items[2]).contains('show').click()
+
+        cy.wrap(items[0]).contains('5 likes')
+        cy.wrap(items[1]).contains('3 likes')
+        cy.wrap(items[2]).contains('2 likes')
+      })
+    })
+
   })
 })
