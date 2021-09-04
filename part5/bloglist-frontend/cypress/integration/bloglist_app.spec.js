@@ -50,5 +50,27 @@ describe('Blog app', function() {
 
       cy.contains('Blog Title by Blog Author')
     })
+
+    it.only('User can like a blog', function() {
+      cy.createBlog({ 
+        title: 'Another Title',
+        author: 'Blog Author',
+        url: 'blog Url',
+        user: {
+          name: 'Matti Luukkainen',
+          username: 'mluukkai',
+          password: 'salainen'
+        }
+      })
+
+      cy.contains('Another Title by Blog Author')
+        .contains('show').click()
+
+      cy.contains('Another Title by Blog Author')
+        .contains('like').click()
+
+      cy.contains('Another Title by Blog Author')
+        .contains('1 like')
+    })
   })
 })
