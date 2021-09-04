@@ -1,12 +1,19 @@
 describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3001/api/testing/reset')
-    const user = {
+    const user1 = {
       name: 'Matti Luukkainen',
       username: 'mluukkai',
       password: 'salainen'
     }
-    cy.request('POST', 'http://localhost:3001/api/users/', user)
+    cy.request('POST', 'http://localhost:3001/api/users/', user1)
+
+    const user2 = {
+      name: 'Random User',
+      username: 'randomuser',
+      password: 'salainen'
+    }
+    cy.request('POST', 'http://localhost:3001/api/users/', user2)
     cy.visit('http://localhost:3000')
   })
 
@@ -37,9 +44,20 @@ describe('Blog app', function() {
   describe('When logged in', function() {
     beforeEach(function() {
       cy.login({ username: 'mluukkai', password: 'salainen' })
+
+      cy.createBlog({ 
+        title: 'Another Title',
+        author: 'Blog Author',
+        url: 'blog Url',
+        user: {
+          name: 'Matti Luukkainen',
+          username: 'mluukkai',
+          password: 'salainen'
+        }
+      })
     })
 
-    it.only('A blog can be created', function() {
+    it('A blog can be created', function() {
       cy.contains('new blog').click()
 
       cy.get('#blogTitle').type('Blog Title')
@@ -51,18 +69,7 @@ describe('Blog app', function() {
       cy.contains('Blog Title by Blog Author')
     })
 
-    it.only('User can like a blog', function() {
-      cy.createBlog({ 
-        title: 'Another Title',
-        author: 'Blog Author',
-        url: 'blog Url',
-        user: {
-          name: 'Matti Luukkainen',
-          username: 'mluukkai',
-          password: 'salainen'
-        }
-      })
-
+    it('User can like a blog', function() {
       cy.contains('Another Title by Blog Author')
         .contains('show').click()
 
@@ -71,6 +78,31 @@ describe('Blog app', function() {
 
       cy.contains('Another Title by Blog Author')
         .contains('1 like')
+    })
+
+    it('User who created a blog can delete it', function() {
+      cy.contains('Another Title by Blog Author')
+        .contains('show').click()
+
+      cy.contains('Another Title by Blog Author')
+        .contains('remove').click()
+
+      cy.get('Another Title by Blog Author')
+        .should('not.exist')
+    })
+
+    it('User who has not created a blog cannot delete it', function() {
+      cy.contains('logout').click()
+
+      cy.login({ username: 'randomuser', password: 'salainen' })
+
+      cy.contains('Another Title by Blog Author')
+        .contains('show').click()
+
+      cy.contains('Another Title by Blog Author')
+        .get('remove').should('not.exist')
+
+      cy.contains('Another Title by Blog Author')
     })
   })
 })
