@@ -49,7 +49,7 @@ describe('Blog app', function() {
         title: 'Another Title',
         author: 'Blog Author',
         url: 'blog Url',
-        likes: 2,
+        likes: 0,
         user: {
           name: 'Matti Luukkainen',
           username: 'mluukkai',
@@ -102,7 +102,7 @@ describe('Blog app', function() {
         .contains('like').click()
 
       cy.contains('Another Title by Blog Author')
-        .contains('1 like')
+        .contains('1 likes')
     })
 
     it('User who created a blog can delete it', function() {
@@ -138,7 +138,7 @@ describe('Blog app', function() {
 
         cy.wrap(items[0]).contains('5 likes')
         cy.wrap(items[1]).contains('3 likes')
-        cy.wrap(items[2]).contains('2 likes')
+        cy.wrap(items[2]).contains('0 likes')
       })
     })
 
