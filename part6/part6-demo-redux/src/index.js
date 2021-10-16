@@ -7,7 +7,6 @@ import App from './App'
 import { noteReducer, createNote } from './reducers/noteReducer'
 import { filterReducer, filterChange } from './reducers/filterReducer'
 
-
 const reducer = combineReducers({
   notes: noteReducer,
   filter: filterReducer
