@@ -1,9 +1,4 @@
-const getId = () => (100000 * Math.random()).toFixed(0)
-
-const reducer = (state = [], action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
-
+const anecdoteReducer = (state = [], action) => {
   switch (action.type) {
     case 'VOTE':
       const id = action.data.id
@@ -30,12 +25,13 @@ export const voteAnecdote = (id) => {
   }
 }
 
-export const createAnecdote = (content) => {
+export const createAnecdote = (data) => {
+  console.log(data)
   return {
     type:'NEW_ANECDOTE',
     data: {
-      content,
-      id: getId(),
+      content: data.content,
+      id: data.id,
       votes: 0
     }
   }
@@ -44,8 +40,8 @@ export const createAnecdote = (content) => {
 export const initializeAnecdotes = (anecdotes) => {
   return {
     type: 'INIT_ANECDOTES',
-    data: anecdotes,
+    data: anecdotes
   }
 }
 
-export default reducer
+export default anecdoteReducer
