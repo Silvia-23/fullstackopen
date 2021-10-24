@@ -1,4 +1,5 @@
 import axios from 'axios'
+import anecdoteReducer from '../reducers/anecdoteReducer'
 
 const baseUrl = 'http://localhost:3001/anecdotes'
 
@@ -8,10 +9,14 @@ const getAll = async () => {
   return response.data
 }
 
-const createNew = async (content) => {
-  const object = { content }
-  const response = await axios.post(baseUrl, object)
+const createNew = async (data) => {
+  const response = await axios.post(baseUrl, data)
   return response.data
 }
 
-export default { getAll, createNew }
+const updateAnecdote = async (newAnecdote) => {
+  const response = await axios.put(`${baseUrl}/${newAnecdote.id}`, newAnecdote)
+  return response.data
+}
+
+export default { getAll, createNew, updateAnecdote }
