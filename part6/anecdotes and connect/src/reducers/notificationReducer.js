@@ -1,21 +1,37 @@
-const notificationReducer = (state = '', action) => {
+const notificationReducer = (state = {notification: '', timeoutId: ''}, action) => {
   switch (action.type) {
     case 'SET_NOTIFICATION':
-      return action.notification
+      return {
+        notification: action.notification,
+        timeoutId: state.timeoutId
+      }
     case 'REMOVE_NOTIFICATION':
-      return ''
+      return {
+        notification: '',
+        timeoutId: state.timeoutId
+      }
+    case 'SET_TIMEOUT':
+        return {
+          notification: state.notification,
+          timeoutId: action.timeoutId
+        }
     default:
       return state
   }
 }
 
-export const setNotification = (notification, displayTime) => {
+export const setNotification = (notification, oldTimeoutId, displayTime) => {
   return async dispatch => {
     await dispatch({
       type: 'SET_NOTIFICATION',
-      notification,
+      notification: notification,
     })
-   setTimeout(() => dispatch(removeNotification()), displayTime)  
+    clearTimeout(oldTimeoutId)
+   let timeoutId = setTimeout(() => dispatch(removeNotification()), displayTime)  
+    await dispatch({
+      type: 'SET_TIMEOUT',
+      timeoutId: timeoutId
+    })
   }
   
 }
@@ -23,7 +39,7 @@ export const setNotification = (notification, displayTime) => {
 export const removeNotification = notification => {
   return {
     type: 'REMOVE_NOTIFICATION',
-    notification,
+    notification: notification,
   }
 }
 

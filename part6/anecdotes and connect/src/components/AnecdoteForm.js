@@ -10,8 +10,7 @@ const AnecdoteForm = (props) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    props.setNotification(content)
-    setTimeout(() => props.removeNotification(), 5000)
+    props.setNotification(content, props.timeoutId, 5000)
     props.createAnecdote(content)
   }
 
@@ -34,7 +33,8 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => {
   return {
-    filter: state.filter
+    filter: state.filter,
+    timeoutId: state.timeoutId
   }
 }
 
