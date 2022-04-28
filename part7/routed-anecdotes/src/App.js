@@ -5,7 +5,7 @@ import {
   useNavigate
 } from "react-router-dom"
 import Notification from './Notification'
-import  { useField } from './hooks'
+import  { useField, onReset } from './hooks'
 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
@@ -71,6 +71,13 @@ const CreateNew = (props) => {
     }, 5000)
   }
 
+  const handleReset = (e) => {
+    e.preventDefault()
+    content.onReset()
+    author.onReset()
+    info.onReset()
+  }
+
   const content = useField('text')
   const author = useField('text')
   const info = useField('text')
@@ -85,7 +92,8 @@ const CreateNew = (props) => {
             name='content'
             type={content.type}
             value={content.value}
-            onChange={content.onChange} />
+            onChange={content.onChange}
+          />
         </div>
         <div>
           author
@@ -103,13 +111,13 @@ const CreateNew = (props) => {
             type={info.type}
             value={info.value}
             onChange={info.onChange}
-           />
+          />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
+        <button type="reset" onClick={handleReset}>reset</button>
       </form>
     </div>
   )
-
 }
 
 const App = () => {
